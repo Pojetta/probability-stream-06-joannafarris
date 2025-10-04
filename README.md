@@ -1,14 +1,16 @@
-# probability-stream-06-joannafarris
+## probability-stream-06-joannafarris
 
-Plan and draft a custom streaming data project.
+P6: Plan and draft a custom streaming data project. 
 
 ---
 
-## P6: Probability Stream
+# Probability Stream with Random Outcomes
 
 This project simulates dice rolls as a continuous data stream using a Python generator.  
 
-The consumer reads each event as it arrives, updates running counts, and calculates live proportions for all six faces.  
+It demonstrates how random outcomes converge toward expected values over time.
+
+The consumer reads each event as it arrives, updates running counts, and calculates live proportions for all six faces. 
 
 A Matplotlib animation displays these proportions as an updating bar chart, showing how the distribution of rolls gradually converges toward the expected probability of **1/6 per face**.
 
@@ -27,6 +29,7 @@ Each message (a single dice roll) is processed as follows:
 
 This process turns an abstract probability principle into a streaming, data-driven visualization.
 
+
 ---
 
 ### Run Instructions
@@ -36,16 +39,20 @@ This process turns an abstract probability principle into a streaming, data-driv
 source .venv/bin/activate
 ```
 
-#### 2. Run the producer
+#### 2. Install dependencies  
+```bash  
+pip install -r requirements.txt 
+```
+
+#### 3. Run the producer
 ```bash
 python -m producers.dice_producer
 ```
-### 3. Run the consumer (with animation) 
+
+#### 4. Run the consumer (with animation) 
 ```bash 
 python -m consumers.animate_dice 
 ```  
-
----
 
 ### Dynamic Visualization
 
@@ -66,6 +73,11 @@ The chart background uses warm, muted tones for visual balance, and proportions 
 ### Example Visualization
 
 ![Dice Roll Stream Animation](images/dice_roll_stream_animation.png)
+
+---
+### Data & Logging
+
+No persistent data or log files are created; the stream is processed in memory and visualized live.
 
 ---
 
