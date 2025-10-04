@@ -29,8 +29,6 @@ def animate_live(delay_sec=0.1, seed=None):
 
     ax.set_ylim(0, .5)  # fixed y-axis to prevent jitter
     ax.set_ylabel("Proportion", fontsize=11)
-    #for label in ax.get_yticklabels():
-        #label.set_fontweight("bold")
 
     ax.set_xlabel("Dice Face", fontsize=11)
     for label in ax.get_xticklabels():
@@ -42,9 +40,6 @@ def animate_live(delay_sec=0.1, seed=None):
 
     title = ax.set_title(f"Dice Proportions (n={n})", fontsize=16)
 
-    #plt.tight_layout()
-    #fig.subplots_adjust(top=0.75)  # try 0.92–0.97 to taste
-    # optional parameters --> fontsize=13, fontweight="bold", color= "#ffeed2", label="Expected (1/6)"
 
     # --- ADDED: running count labels for each bar ---
     count_labels = []

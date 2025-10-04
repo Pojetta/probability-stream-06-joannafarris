@@ -7,7 +7,9 @@ Plan and draft a custom streaming data project.
 ## P6: Probability Stream
 
 This project simulates dice rolls as a continuous data stream using a Python generator.  
+
 The consumer reads each event as it arrives, updates running counts, and calculates live proportions for all six faces.  
+
 A Matplotlib animation displays these proportions as an updating bar chart, showing how the distribution of rolls gradually converges toward the expected probability of **1/6 per face**.
 
 ---
@@ -15,6 +17,7 @@ A Matplotlib animation displays these proportions as an updating bar chart, show
 ### Insight and Focus
 
 The main insight is observing **probability stabilization** — how random outcomes begin unevenly but converge toward a predictable distribution over time.  
+
 By tracking proportions in real time, this stream demonstrates the **Law of Large Numbers** in a visual and interactive way.
 
 Each message (a single dice roll) is processed as follows:
