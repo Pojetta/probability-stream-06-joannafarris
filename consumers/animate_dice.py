@@ -1,7 +1,50 @@
 # consumers/animate_dice.py
+
+"""
+Animate live dice-roll proportions.
+
+Summary
+- Streams die rolls from `consumers.stream_consumer.consume_forever` and renders
+  a live bar chart of cumulative face proportions with an expected 1/6 reference line.
+- Displays running counts as labels; title shows current sample size n.
+- Writes periodic snapshot rows to CSV via `utils.snapshot` (sidecar; no visual impact).
+
+Behavior
+- Fixed y-axis (0–0.5) to reduce jitter while proportions converge.
+- Bars recolor consistently by face; labels reposition for readability.
+- Title updates each frame with the latest n.
+
+Snapshots
+- `utils.snapshot.init()` ensures the CSV exists; `maybe_write(n, counts)` appends
+  a row every `SNAPSHOT_EVERY` rolls.
+- Fields: ts, n, max_abs_dev, chi2, p1..p6 (cumulative proportions), c1..c6 (cumulative counts).
+- Environment:
+    SNAPSHOT_EVERY (default: 50)
+    SNAPSHOT_PATH  (default: data/snapshots.csv)
+
+Controls
+- Space: pause / resume (title reflects PAUSED state with last n)
+- X:     stop (freeze last frame; window remains open)
+- Q:     close the window (standard Matplotlib behavior)
+
+Run
+- From the repository root:
+    python -m consumers.animate_dice
+- Optional parameters (via code or wrapper):
+    animate_live(delay_sec=0.1, seed=7)
+
+Dependencies
+- Matplotlib for animation and plotting.
+- `consumers.stream_consumer` for the roll stream.
+- `utils.snapshot` for sidecar CSV snapshots.
+"""
+
+
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from consumers.stream_consumer import consume_forever
+from utils import snapshot as snap  # NEW: sidecar snapshots; no visual impact
+
 
 def animate_live(delay_sec=0.1, seed=None):
     faces = [1, 2, 3, 4, 5, 6]
@@ -10,10 +53,14 @@ def animate_live(delay_sec=0.1, seed=None):
     # Prime one frame
     counts, props, n = next(gen)
 
+    snap.init()                 # NEW: ensure snapshots file exists
+    snap.maybe_write(n, counts) # NEW: write snapshot if interval
+
     #fig, ax = plt.subplots()
     fig, ax = plt.subplots(figsize=(7, 4), constrained_layout=True)
     fig.patch.set_facecolor("#ffeed247")  # background around the plot
     ax.set_facecolor("#ffeed2a5")  
+    
 
     labels  = [str(f) for f in faces]
     heights = [props.get(f, 0.0) for f in faces]
@@ -39,7 +86,6 @@ def animate_live(delay_sec=0.1, seed=None):
     ax.legend(loc="upper right", frameon=True)
 
     title = ax.set_title(f"Dice Proportions (n={n})", fontsize=16)
-
 
     # --- ADDED: running count labels for each bar ---
     count_labels = []
@@ -80,6 +126,8 @@ def animate_live(delay_sec=0.1, seed=None):
             bars[i].set_height(h)
             # ADDED: update the label position/text with current count
             _place_label(i, h, counts.get(f, 0))
+
+        snap.maybe_write(n_now, counts)  # NEW: sidecar snapshot; chart unchanged
 
         title.set_text(f"Dice Proportions (n={n_now})")
         state["n"] = n_now  # remember latest n for pause/stop display

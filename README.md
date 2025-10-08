@@ -3,8 +3,7 @@
 P6: Plan and draft a custom streaming data project. 
 
 ---
-
-  # Probability Stream with Random Outcomes
+# Probability Stream with Random Outcomes
 
 This project simulates dice rolls as a continuous data stream using a Python generator.  
 

@@ -1,4 +1,19 @@
 # consumers/stream_consumer.py
+
+"""
+Lightweight dice stream consumer.
+
+- Wraps `producers.dice_producer.dice_stream` and maintains cumulative counts (1–6)
+  and total rolls `n`, exposing current proportions on demand.
+- Public entrypoint: `consume_forever(delay_sec=0.2, seed=None, max_events=None)`,
+  a generator yielding `(counts: dict[int,int], proportions: dict[int,float], n: int)`
+  after each event.
+
+Intended use: import `consume_forever` from visualizers (e.g., `animate_dice.py`)
+to drive a live chart without re-implementing counting logic.
+"""
+
+
 from producers.dice_producer import dice_stream
 
 print("__name__ in stream_consumer:", __name__)

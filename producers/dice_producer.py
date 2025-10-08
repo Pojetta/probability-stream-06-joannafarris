@@ -1,4 +1,25 @@
 # producers/dice_producer.py
+
+"""
+Simple dice event producer.
+
+Generates an infinite stream of dice-roll events as dictionaries:
+{
+    "trial_id": int,           # 1, 2, 3, ...
+    "event_type": "dice",
+    "outcome": 1..6,           # uniform RNG
+    "timestamp": ISO-8601 UTC  # e.g., "2025-10-07T01:23:45.678901+00:00"
+}
+
+Args:
+    delay_sec (float): Sleep between events (default 0.2 s).
+    seed (int | None): RNG seed for reproducible outcomes.
+
+Yields:
+    dict: One event per iteration.
+"""
+
+
 import random
 import time
 from datetime import datetime, timezone
