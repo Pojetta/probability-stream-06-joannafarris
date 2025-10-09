@@ -111,6 +111,11 @@ python tools/analyze_snapshots.py
 python -m tools.analyze_snapshots
 ```
 ---
+**Configuration:**  
+- **SNAPSHOT_PATH** (env var) — path to the snapshot CSV written by the stream; default: `data/snapshots.csv`.  
+- **REPORT_DIR** (optional env var) — output directory for reports; default: `reports/`.
+
+---
 
 ### Example Outputs
 
