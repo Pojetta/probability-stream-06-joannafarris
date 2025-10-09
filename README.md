@@ -139,5 +139,5 @@ python -m tools.analyze_snapshots
 ---
 
 **Author:** Joanna Farris  
-**Course:** DATA 644 — Streaming Data Analytics  
+**Course:** Streaming Data 44671-80  
 **Institution:** Northwest Missouri State University
