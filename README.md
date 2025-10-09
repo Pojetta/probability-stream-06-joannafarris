@@ -76,7 +76,7 @@ The chart background uses warm, muted tones for visual balance, and proportions 
 ### Data & Logging
 
 
-Originally, the project processed the stream entirely in memory. It has been extended (within this same repository) to write **periodic snapshots** for offline analysis.
+Originally, the project processed the stream entirely in memory. It has been extended to write **periodic snapshots** for offline analysis.
 
 
 Each snapshot row includes:
