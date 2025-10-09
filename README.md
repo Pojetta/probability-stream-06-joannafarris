@@ -28,7 +28,6 @@ Each message (a single dice roll) is processed as follows:
 
 This process turns an abstract probability principle into a streaming, data-driven visualization.
 
-
 ---
 
 ### Run Instructions
@@ -76,13 +75,64 @@ The chart background uses warm, muted tones for visual balance, and proportions 
 ---
 ### Data & Logging
 
-No persistent data or log files are created; the stream is processed in memory and visualized live.
+
+Originally, the project processed the stream entirely in memory. It has been extended (within this same repository) to write **periodic snapshots** for offline analysis.
+
+
+Each snapshot row includes:
+- Timestamp 
+- Total rolls (`n`) 
+- Cumulative counts (`c1..c6`) 
+- Cumulative proportions (`p1..p6`)
+
+
+Snapshots are appended to a CSV during the stream so you can analyze runs after the fact.
 
 ---
 
-### Future Extensions
+## Offline Snapshot Analysis
 
-- Add **bias detection** to flag when one face appears unusually often.  
-- Introduce a **coin flip stream** for side-by-side comparison.  
-- Include **alert triggers** (email or text) when proportions deviate significantly from expectation.
+The analysis tooling in this repository reads the snapshot CSV and produces a compact report of each run.
 
+**Artifacts (saved in `./reports/`):**
+- **faces_distribution.png** — final snapshot bar chart of cumulative proportions (with per-bar labels). 
+- **faces_trend.png** — cumulative proportions over time for faces 1–6, with an expected 1/6 reference line. 
+- **summary.csv** — one row per run with final `n`, chi-squared (`chi2`), `max_abs_dev`, and `p1..p6`. A new “run” is inferred whenever `n` decreases (stream restart).
+
+
+**How to run (from repo root):** 
+```bash
+python tools/analyze_snapshots.py
+```
+
+ or
+
+```bash
+python -m tools.analyze_snapshots
+```
+---
+
+### Example Outputs
+
+
+- The distribution chart shows how close observed proportions are to the theoretical 1/6 line after many rolls. 
+
+![Distribution](images/distribution.png "Final proportions vs 1/6")
+
+- The trend chart visualizes the convergence process for each face over time. 
+
+![Trend](images/trend.png "Convergence over time")
+
+---
+
+### Future Directions
+
+- Add real-time bias detection during streaming.  
+- Compare multiple dice (or other random generators) side-by-side.  
+- Stream snapshots to a lightweight database for longer-term aggregation or a dashboard.
+
+---
+
+**Author:** Joanna Farris  
+**Course:** DATA 644 — Streaming Data Analytics  
+**Institution:** Northwest Missouri State University
